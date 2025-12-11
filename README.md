@@ -5,3 +5,13 @@
 <img src="assets/preview3-optimized.png" alt="preview" width="400">
 
 A minimal, drop-in browser console for debugging on mobile or when devtools aren't available. Shows console logs, network requests, and storage.
+
+## Usage
+
+Add this script tag to your HTML (before other scripts to catch all logs):
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/rickvanderwolk/peek@main/peek.js"></script>
+```
+
+Then activate by adding `?peek=1` to your URL.
