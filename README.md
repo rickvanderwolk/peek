@@ -13,3 +13,7 @@ Add this script tag to your HTML (before other scripts to catch all logs):
 ```
 
 Then activate by adding `?peek=1` to your URL.
+
+## Demo
+
+https://rickvanderwolk.github.io/peek/demo.html?peek=1
