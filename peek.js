@@ -1,5 +1,5 @@
 (function() {
-  if (new URLSearchParams(location.search).get('wc') !== '1') return;
+  if (new URLSearchParams(location.search).get('peek') !== '1') return;
 
   // State
   let logs = [];
@@ -13,40 +13,40 @@
 
   // CSS
   const css = `
-    #wc{position:fixed;bottom:0;left:0;right:0;height:33vh;background:#0f0f0f;color:#e8e8e8;font:11px ui-monospace,SFMono-Regular,SF Mono,Menlo,Monaco,Consolas,monospace;z-index:999999;display:flex;flex-direction:column;box-shadow:0 -2px 10px rgba(0,0,0,.5)}
-    #wc.collapsed{height:32px}
-    #wc.collapsed #wc-content,#wc.collapsed #wc-input,#wc.collapsed #wc-filters{display:none}
-    #wc.fullscreen{height:100%;top:0}
-    #wc-resize{height:6px;cursor:ns-resize;background:#2a2a2a;touch-action:none}
-    #wc-resize:hover{background:#3a7eff}
-    #wc-bar{display:flex;background:#1a1a1a;border-bottom:1px solid #2a2a2a;height:28px}
-    #wc-bar button{background:0;color:#999;border:none;border-radius:0;padding:0 12px;cursor:pointer;font:inherit;border-bottom:2px solid transparent;transition:.15s}
-    #wc-bar button:hover{color:#fff;background:rgba(255,255,255,.05)}
-    #wc-bar button.on{color:#fff;border-bottom-color:#3a7eff}
-    #wc-bar [data-p]{font-weight:500}
-    #wc-bar .icon{padding:0 8px;font-size:13px}
+    #peek{position:fixed;bottom:0;left:0;right:0;height:33vh;background:#0f0f0f;color:#e8e8e8;font:11px ui-monospace,SFMono-Regular,SF Mono,Menlo,Monaco,Consolas,monospace;z-index:999999;display:flex;flex-direction:column;box-shadow:0 -2px 10px rgba(0,0,0,.5)}
+    #peek.collapsed{height:32px}
+    #peek.collapsed #peek-content,#peek.collapsed #peek-input,#peek.collapsed #peek-filters{display:none}
+    #peek.fullscreen{height:100%;top:0}
+    #peek-resize{height:6px;cursor:ns-resize;background:#2a2a2a;touch-action:none}
+    #peek-resize:hover{background:#3a7eff}
+    #peek-bar{display:flex;background:#1a1a1a;border-bottom:1px solid #2a2a2a;height:28px}
+    #peek-bar button{background:0;color:#999;border:none;border-radius:0;padding:0 12px;cursor:pointer;font:inherit;border-bottom:2px solid transparent;transition:.15s}
+    #peek-bar button:hover{color:#fff;background:rgba(255,255,255,.05)}
+    #peek-bar button.on{color:#fff;border-bottom-color:#3a7eff}
+    #peek-bar [data-p]{font-weight:500}
+    #peek-bar .icon{padding:0 8px;font-size:13px}
     .spacer{flex:1}
-    #wc-filters{display:flex;gap:2px;padding:4px 8px;background:#141414;border-bottom:1px solid #2a2a2a}
-    #wc-filters button{background:0;color:#888;border:none;padding:3px 8px;cursor:pointer;font:10px inherit;transition:.15s}
-    #wc-filters button:hover{background:rgba(255,255,255,.08);color:#ccc}
-    #wc-filters button.on{background:rgba(58,126,255,.2);color:#6cb2ff}
-    #wc[data-p=storage] #wc-filters,#wc[data-p=network] #wc-filters{display:none}
+    #peek-filters{display:flex;gap:2px;padding:4px 8px;background:#141414;border-bottom:1px solid #2a2a2a}
+    #peek-filters button{background:0;color:#888;border:none;padding:3px 8px;cursor:pointer;font:10px inherit;transition:.15s}
+    #peek-filters button:hover{background:rgba(255,255,255,.08);color:#ccc}
+    #peek-filters button.on{background:rgba(58,126,255,.2);color:#6cb2ff}
+    #peek[data-p=storage] #peek-filters,#peek[data-p=network] #peek-filters{display:none}
     .cnt{background:rgba(255,255,255,.15);padding:1px 5px;border-radius:10px;font-size:9px;margin-left:4px}
     .cnt-error{background:rgba(255,85,85,.3);color:#ff8888}
     .cnt-warn{background:rgba(255,200,0,.25);color:#ffd666}
     .cnt-info{background:rgba(58,126,255,.25);color:#6cb2ff}
-    #wc-content{flex:1;overflow:hidden;display:flex;flex-direction:column}
-    #wc-logs,#wc-storage,#wc-network{flex:1;overflow-y:auto}
-    #wc-storage,#wc-network{display:none;padding:8px}
-    #wc[data-p=storage] #wc-logs,#wc[data-p=storage] #wc-input{display:none}
-    #wc[data-p=storage] #wc-storage{display:block}
-    #wc[data-p=network] #wc-logs,#wc[data-p=network] #wc-input{display:none}
-    #wc[data-p=network] #wc-network{display:block}
-    #wc[data-p=network] #wc-net-filters{display:flex}
-    #wc-net-filters{display:none;gap:2px;padding:4px 8px;background:#141414;border-bottom:1px solid #2a2a2a}
-    #wc-net-filters button{background:0;color:#888;border:none;padding:3px 8px;cursor:pointer;font:10px inherit;transition:.15s}
-    #wc-net-filters button:hover{background:rgba(255,255,255,.08);color:#ccc}
-    #wc-net-filters button.on{background:rgba(58,126,255,.2);color:#6cb2ff}
+    #peek-content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+    #peek-logs,#peek-storage,#peek-network{flex:1;overflow-y:auto}
+    #peek-storage,#peek-network{display:none;padding:8px}
+    #peek[data-p=storage] #peek-logs,#peek[data-p=storage] #peek-input{display:none}
+    #peek[data-p=storage] #peek-storage{display:block}
+    #peek[data-p=network] #peek-logs,#peek[data-p=network] #peek-input{display:none}
+    #peek[data-p=network] #peek-network{display:block}
+    #peek[data-p=network] #peek-net-filters{display:flex}
+    #peek-net-filters{display:none;gap:2px;padding:4px 8px;background:#141414;border-bottom:1px solid #2a2a2a}
+    #peek-net-filters button{background:0;color:#888;border:none;padding:3px 8px;cursor:pointer;font:10px inherit;transition:.15s}
+    #peek-net-filters button:hover{background:rgba(255,255,255,.08);color:#ccc}
+    #peek-net-filters button.on{background:rgba(58,126,255,.2);color:#6cb2ff}
     .req{border-bottom:1px solid #1a1a1a;cursor:pointer}
     .req:hover{background:rgba(255,255,255,.02)}
     .req-row{padding:6px 12px;display:flex;align-items:center;gap:8px}
@@ -73,10 +73,10 @@
     .log-icon{margin-right:8px;width:14px;text-align:center;opacity:.6}
     .log-time{color:#555;margin-right:12px;font-size:10px}
     .log-msg{flex:1;min-width:0}
-    #wc-input{display:flex;border-top:1px solid #2a2a2a;background:#141414}
-    #wc-input span{color:#3a7eff;padding:8px 4px 8px 12px;font-size:12px}
-    #wc-input input{flex:1;background:0;color:#e8e8e8;border:none;padding:8px 12px 8px 4px;font:inherit;outline:none}
-    #wc-input input::placeholder{color:#555}
+    #peek-input{display:flex;border-top:1px solid #2a2a2a;background:#141414}
+    #peek-input span{color:#3a7eff;padding:8px 4px 8px 12px;font-size:12px}
+    #peek-input input{flex:1;background:0;color:#e8e8e8;border:none;padding:8px 12px 8px 4px;font:inherit;outline:none}
+    #peek-input input::placeholder{color:#555}
     .sh{margin-bottom:12px}
     .sh-head{color:#6cb2ff;padding:4px 0;cursor:pointer;user-select:none;font-weight:500}
     .sh-head:hover{color:#8ec5ff}
@@ -97,17 +97,17 @@
 
   // HTML
   const html = `
-    <div id="wc-resize"></div>
-    <div id="wc-bar">
+    <div id="peek-resize"></div>
+    <div id="peek-bar">
       <button data-p="console" class="on">Console</button>
       <button data-p="network">Network</button>
       <button data-p="storage">Storage</button>
       <span class="spacer"></span>
-      <button id="wc-clear" class="icon" title="Clear">🗑</button>
-      <button id="wc-full" class="icon" title="Fullscreen">⤢</button>
-      <button id="wc-min" class="icon" title="Minimize">−</button>
+      <button id="peek-clear" class="icon" title="Clear">🗑</button>
+      <button id="peek-full" class="icon" title="Fullscreen">⤢</button>
+      <button id="peek-min" class="icon" title="Minimize">−</button>
     </div>
-    <div id="wc-filters">
+    <div id="peek-filters">
       <button data-f="all">All <span class="cnt" id="c-all">0</span></button>
       <button data-f="error" class="on">Err <span class="cnt cnt-error" id="c-error">0</span></button>
       <button data-f="warn">Warn <span class="cnt cnt-warn" id="c-warn">0</span></button>
@@ -115,7 +115,7 @@
       <button data-f="log">Log <span class="cnt" id="c-log">0</span></button>
       <button data-f="debug">Debug <span class="cnt" id="c-debug">0</span></button>
     </div>
-    <div id="wc-net-filters">
+    <div id="peek-net-filters">
       <button data-nf="all" class="on">All</button>
       <button data-nf="fetch">Fetch/XHR</button>
       <button data-nf="script">JS</button>
@@ -124,12 +124,12 @@
       <button data-nf="font">Font</button>
       <button data-nf="other">Other</button>
     </div>
-    <div id="wc-content">
-      <div id="wc-logs"></div>
-      <div id="wc-network"></div>
-      <div id="wc-storage"></div>
+    <div id="peek-content">
+      <div id="peek-logs"></div>
+      <div id="peek-network"></div>
+      <div id="peek-storage"></div>
     </div>
-    <div id="wc-input">
+    <div id="peek-input">
       <span>›</span>
       <input placeholder="Enter JavaScript...">
     </div>
@@ -141,7 +141,7 @@
   document.head.appendChild(style);
 
   const el = document.createElement('div');
-  el.id = 'wc';
+  el.id = 'peek';
   el.dataset.p = 'console';
   el.innerHTML = html;
   document.body.appendChild(el);
@@ -149,10 +149,10 @@
   // Cache elements
   const $ = id => document.getElementById(id);
   const $$ = (sel, ctx = document) => ctx.querySelectorAll(sel);
-  const logsEl = $('wc-logs');
-  const storageEl = $('wc-storage');
-  const networkEl = $('wc-network');
-  const inputEl = el.querySelector('#wc-input input');
+  const logsEl = $('peek-logs');
+  const storageEl = $('peek-storage');
+  const networkEl = $('peek-network');
+  const inputEl = el.querySelector('#peek-input input');
 
   const icons = { debug: '·', log: '▸', info: 'ⓘ', warn: '⚠', error: '✕' };
 
@@ -425,21 +425,21 @@
   const origXHROpen = XMLHttpRequest.prototype.open;
   const origXHRSend = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.open = function(method, url) {
-    this._wcMethod = method;
-    this._wcUrl = String(url);
+    this._peekMethod = method;
+    this._peekUrl = String(url);
     return origXHROpen.apply(this, arguments);
   };
   XMLHttpRequest.prototype.send = function() {
     const startTime = performance.now();
-    const url = this._wcUrl;
+    const url = this._peekUrl;
     // Check if already tracked by PerformanceObserver
     let req = requests.find(r => r.url === url && !r._fromXHR);
     if (req) {
       req._fromXHR = true;
-      req.method = this._wcMethod;
+      req.method = this._peekMethod;
       req.type = 'xmlhttprequest';
     } else {
-      req = { url, method: this._wcMethod, type: 'xmlhttprequest', status: 0, duration: 0, size: 0, _fromXHR: true };
+      req = { url, method: this._peekMethod, type: 'xmlhttprequest', status: 0, duration: 0, size: 0, _fromXHR: true };
       requests.push(req);
     }
 
@@ -523,8 +523,8 @@
   });
 
   // Event handlers
-  $$('#wc-bar [data-p]').forEach(btn => btn.onclick = () => {
-    $$('#wc-bar [data-p]').forEach(b => b.classList.remove('on'));
+  $$('#peek-bar [data-p]').forEach(btn => btn.onclick = () => {
+    $$('#peek-bar [data-p]').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
     activePanel = btn.dataset.p;
     el.dataset.p = activePanel;
@@ -542,21 +542,21 @@
     }
   });
 
-  $$('#wc-filters [data-f]').forEach(btn => btn.onclick = () => {
-    $$('#wc-filters [data-f]').forEach(b => b.classList.remove('on'));
+  $$('#peek-filters [data-f]').forEach(btn => btn.onclick = () => {
+    $$('#peek-filters [data-f]').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
     filter = btn.dataset.f;
     render();
   });
 
-  $$('#wc-net-filters [data-nf]').forEach(btn => btn.onclick = () => {
-    $$('#wc-net-filters [data-nf]').forEach(b => b.classList.remove('on'));
+  $$('#peek-net-filters [data-nf]').forEach(btn => btn.onclick = () => {
+    $$('#peek-net-filters [data-nf]').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
     netFilter = btn.dataset.nf;
     renderNetwork();
   });
 
-  $('wc-clear').onclick = () => {
+  $('peek-clear').onclick = () => {
     if (activePanel === 'console') {
       logs = [];
       render();
@@ -575,7 +575,7 @@
     }
   };
 
-  $('wc-min').onclick = () => {
+  $('peek-min').onclick = () => {
     if (el.classList.contains('collapsed')) {
       el.classList.remove('collapsed');
       if (wasFullscreen) {
@@ -593,7 +593,7 @@
   };
 
   // Click on bar to restore when collapsed
-  $('wc-bar').onclick = e => {
+  $('peek-bar').onclick = e => {
     if (!el.classList.contains('collapsed')) return;
     if (e.target.closest('button')) return; // Don't trigger on button clicks
     el.classList.remove('collapsed');
@@ -605,7 +605,7 @@
     }
   };
 
-  $('wc-full').onclick = () => {
+  $('peek-full').onclick = () => {
     el.classList.remove('collapsed');
     if (el.classList.contains('fullscreen')) {
       el.classList.remove('fullscreen');
@@ -617,7 +617,7 @@
   };
 
   // Resize
-  const resize = $('wc-resize');
+  const resize = $('peek-resize');
   const setHeight = y => {
     if (!isResizing) return;
     customHeight = Math.max(100, Math.min(innerHeight - y, innerHeight - 50)) + 'px';
@@ -646,5 +646,5 @@
     inputEl.value = '';
   };
 
-  console.info('wc active');
+  console.info('peek active');
 })();

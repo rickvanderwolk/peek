@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wc Demo</title>
+  <title>Peek Demo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,8 +35,8 @@
   </style>
 </head>
 <body>
-  <h1>wc Demo</h1>
-  <p>Activate with <code>?wc=1</code> in the URL, e.g.: <code>demo.html?wc=1</code></p>
+  <h1>Peek Demo</h1>
+  <p>Activate with <code>?peek=1</code> in the URL, e.g.: <code>demo.html?peek=1</code></p>
   <p>Click the buttons to generate different console messages:</p>
 
   <div class="buttons">
@@ -60,8 +60,8 @@
 
   <p>Or type JavaScript in the input field below (e.g. <code>2 + 2</code> or <code>document.title</code>)</p>
 
-  <!-- Load wc first to catch all errors -->
-  <script src="wc.js"></script>
+  <!-- Load peek first to catch all errors -->
+  <script src="peek.js"></script>
 
   <script>
     // Add some demo cookies
@@ -90,7 +90,7 @@
 
     // Log some messages on load
     console.log('Page loaded');
-    console.info('wc demo started');
+    console.info('peek demo started');
 
     // Simulate some activity
     setTimeout(() => {
