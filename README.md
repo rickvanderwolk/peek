@@ -9,13 +9,13 @@ A minimal, drop-in browser console for debugging on mobile or when devtools aren
 ### CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/rickvanderwolk/peek@main/peek.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/rickvanderwolk/peek@v0.1.0/peek.js"></script>
 ```
 
 ### npm
 
 ```bash
-npm install rickvanderwolk/peek
+npm install rickvanderwolk/peek#v0.1.0
 ```
 
 ```js
