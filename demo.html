@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wc Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      padding-bottom: 280px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+    .btn-log { background: #666; }
+    .btn-info { background: #007acc; }
+    .btn-warn { background: #b8860b; }
+    .btn-error { background: #c0392b; }
+    .btn-object { background: #27ae60; }
+  </style>
+</head>
+<body>
+  <h1>wc Demo</h1>
+  <p>Activate with <code>?wc=1</code> in the URL, e.g.: <code>demo.html?wc=1</code></p>
+  <p>Click the buttons to generate different console messages:</p>
+
+  <div class="buttons">
+    <button class="btn-log" onclick="console.log('This is a log message')">console.log</button>
+    <button class="btn-log" onclick="console.debug('This is a debug message')">console.debug</button>
+    <button class="btn-info" onclick="console.info('This is an info message')">console.info</button>
+    <button class="btn-warn" onclick="console.warn('This is a warning!')">console.warn</button>
+    <button class="btn-error" onclick="console.error('This is an error!')">console.error</button>
+    <button class="btn-log" onclick="console.trace('Stack trace')">console.trace</button>
+    <button class="btn-object" onclick="logComplex()">Log Complex</button>
+    <button class="btn-log" onclick="logMany()">Log Many</button>
+  </div>
+
+  <div class="buttons">
+    <button class="btn-error" onclick="throwError()">Uncaught Error</button>
+    <button class="btn-error" onclick="causeTypeError()">TypeError</button>
+    <button class="btn-error" onclick="causeReferenceError()">ReferenceError</button>
+    <button class="btn-error" onclick="rejectPromise()">Promise Reject</button>
+    <button class="btn-error" onclick="fetchError()">Fetch Error</button>
+  </div>
+
+  <p>Or type JavaScript in the input field below (e.g. <code>2 + 2</code> or <code>document.title</code>)</p>
+
+  <!-- Load wc first to catch all errors -->
+  <script src="wc.js"></script>
+
+  <script>
+    // Add some demo cookies
+    document.cookie = 'session_id=abc123xyz';
+    document.cookie = 'user_prefs=' + encodeURIComponent(JSON.stringify({ theme: 'dark', lang: 'en' }));
+    document.cookie = 'visited=true';
+
+    // Add some demo storage data
+    localStorage.setItem('user', JSON.stringify({
+      name: 'John',
+      email: 'john@example.com',
+      settings: {
+        notifications: true,
+        theme: 'dark',
+        language: 'en'
+      },
+      roles: ['admin', 'user']
+    }));
+    localStorage.setItem('theme', 'dark');
+    localStorage.setItem('lastVisit', new Date().toISOString());
+    sessionStorage.setItem('sessionId', 'abc123');
+    sessionStorage.setItem('cart', JSON.stringify([
+      { id: 1, name: 'Widget', qty: 2, options: { color: 'blue', size: 'M' } },
+      { id: 2, name: 'Gadget', qty: 1, options: { color: 'red' } }
+    ]));
+
+    // Log some messages on load
+    console.log('Page loaded');
+    console.info('wc demo started');
+
+    // Simulate some activity
+    setTimeout(() => {
+      console.log('Timeout executed after 1 second');
+    }, 1000);
+
+    setTimeout(() => {
+      console.warn('Warning after 2 seconds');
+    }, 2000);
+
+    setTimeout(() => {
+      console.error('Error after 3 seconds');
+    }, 3000);
+
+    // Demo network requests
+    fetch('https://jsonplaceholder.typicode.com/posts/1')
+      .then(r => r.json())
+      .then(data => console.log('Fetched post:', data.title));
+
+    fetch('https://jsonplaceholder.typicode.com/users/1')
+      .then(r => r.json())
+      .then(data => console.log('Fetched user:', data.name));
+
+    // XHR request
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos/1');
+    xhr.onload = () => console.log('XHR loaded:', JSON.parse(xhr.responseText).title);
+    xhr.send();
+
+    // Button functions
+    function throwError() {
+      throw new Error('This is an uncaught error!');
+    }
+
+    function causeTypeError() {
+      const obj = null;
+      obj.doSomething(); // TypeError: Cannot read property of null
+    }
+
+    function causeReferenceError() {
+      console.log(variableThatDoesNotExist);
+    }
+
+    function rejectPromise() {
+      Promise.reject('Promise rejected without catch!');
+    }
+
+    function fetchError() {
+      fetch('https://does-not-exist-12345.com/api')
+        .then(r => r.json())
+        .catch(e => console.error('Fetch failed:', e.message));
+    }
+
+    function logMany() {
+      console.log('Log 1');
+      console.info('Info 1');
+      console.warn('Warning 1');
+      console.error('Error 1');
+      console.log('Log 2');
+      console.warn('Warning 2');
+    }
+
+    function logComplex() {
+      console.log('String', 123, true, null, undefined);
+      console.log({ user: 'John', age: 30, roles: ['admin', 'user'] });
+      console.log('Array:', [1, 2, 3, { nested: true }]);
+    }
+  </script>
+</body>
+</html>
