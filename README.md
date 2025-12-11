@@ -6,13 +6,23 @@ A minimal, drop-in browser console for debugging on mobile or when devtools aren
 
 ## Usage
 
-Add this script tag to your HTML (before other scripts to catch all logs):
+### CDN
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/rickvanderwolk/peek@main/peek.js"></script>
 ```
 
-Then activate by adding `?peek=1` to your URL.
+### npm
+
+```bash
+npm install rickvanderwolk/peek
+```
+
+```js
+import 'peek';
+```
+
+Add the script before other scripts to catch all logs. Then activate by adding `?peek=1` to your URL.
 
 ## Demo
 

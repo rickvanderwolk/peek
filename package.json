@@ -1,0 +1,18 @@
+{
+  "name": "peek",
+  "version": "0.1.0",
+  "description": "A minimal, drop-in browser console for debugging on mobile or when devtools aren't available. Shows console logs, network requests, and storage.",
+  "main": "peek.js",
+  "browser": "peek.js",
+  "files": ["peek.js", "LICENSE", "README.md"],
+  "keywords": ["console", "debug", "mobile", "devtools", "network", "storage"],
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rickvanderwolk/peek.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rickvanderwolk/peek/issues"
+  },
+  "homepage": "https://github.com/rickvanderwolk/peek#readme"
+}
